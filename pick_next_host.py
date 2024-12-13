@@ -7,20 +7,24 @@ file_path = "meeting-hosts.md"
 # Read and parse the Markdown file
 def read_md_file(file_path):
     try:
+        # Read the Markdown file while skipping the header
         df = pd.read_csv(
             file_path,
             delimiter="|",
-            skiprows=2,  # Skip header lines
+            skiprows=2,  # Skip the first two header rows
             names=["Name", "Hosted Count", "Randomized Sort"],
-            skipinitialspace=True
+            skipinitialspace=True,
+            engine="python"
         )
-        # Clean up the data
-        df = df.dropna().reset_index(drop=True)  # Remove NaN rows and reset index
+        # Drop NaN rows and reset index
+        df = df.dropna().reset_index(drop=True)
         df["Hosted Count"] = df["Hosted Count"].astype(int)
+        print("DataFrame loaded successfully:")
+        print(df)
         return df
     except Exception as e:
         print(f"Error reading the file: {e}")
-        return pd.DataFrame()  # Return an empty DataFrame if something fails
+        return pd.DataFrame()  # Return an empty DataFrame on error
 
 # Write back the updated DataFrame to the Markdown file
 def write_md_file(file_path, df):
@@ -40,7 +44,7 @@ def pick_next_host():
     df = read_md_file(file_path)
 
     if df.empty:
-        print("Error: The DataFrame is empty. Please check the Markdown file.")
+        print("Error: The DataFrame is empty. Please check the Markdown file content.")
         return
 
     # Assign random numbers and sort
@@ -48,12 +52,9 @@ def pick_next_host():
     df = df.sort_values(by=["Randomized Sort"]).reset_index(drop=True)
 
     # Select the next host
-    if not df.empty:
-        next_host = df.iloc[0]["Name"]
-        print(f"The next host is: {next_host}")
-        df.loc[0, "Hosted Count"] += 1  # Increment the hosted count for the selected host
-    else:
-        print("No valid hosts found.")
+    next_host = df.iloc[0]["Name"]
+    print(f"The next host is: {next_host}")
+    df.loc[0, "Hosted Count"] += 1  # Increment the hosted count for the selected host
 
     # Write the updated DataFrame back to the file
     write_md_file(file_path, df)
