@@ -2,7 +2,7 @@ import random
 import pandas as pd
 
 # File path to the markdown file
-file_path = "meeting-hosts.md"
+file_path = "README.md"
 
 # Read and parse the Markdown file
 def read_md_file(file_path):
