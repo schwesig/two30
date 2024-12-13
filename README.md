@@ -2,8 +2,8 @@
 
 | Name       | Hosted Count | Randomized Sort |
 |------------|--------------|-----------------|
-| Alice      | 2            | 45              |
-| Bob        | 1            | 12              |
-| Charlie    | 1            | 30              |
-| Diana      | 2            | 78              |
-| Edward     | 1            | 99              |
+| Alice      | 2            | 1              |
+| Bob        | 1            | 2              |
+| Charlie    | 1            | 3              |
+| Diana      | 2            | 4              |
+| Edward     | 1            | 5              |
