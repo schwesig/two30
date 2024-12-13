@@ -1,0 +1,33 @@
+name: Update Meeting Host
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 * * 1-5" # Every weekday at 9 AM
+
+jobs:
+  update-host:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: pip install pandas
+
+    - name: Run the script
+      run: python pick_next_host.py
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add meeting-hosts.md
+        git commit -m "Update meeting hosts"
+        git push
